@@ -2,9 +2,9 @@
 
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('temphum.sqlite');
-var insertstmt = db.prepare("INSERT INTO temphum (date, tempvalue, humvalue, sensorid) VALUES (?,?,?,?)");
-var selectallsstmt = db.prepare("SELECT * FROM temphum order by date");
-var selectsnsrstmt = db.prepare("SELECT * FROM temphum WHERE sensorid = ? order by date");
+var insertstmt = db.prepare("INSERT INTO temphum (recordedate, tempvalue, humvalue, sensorid) VALUES (?,?,?,?)");
+var selectallsstmt = db.prepare("SELECT * FROM temphum order by recordedate");
+var selectsnsrstmt = db.prepare("SELECT * FROM temphum WHERE sensorid = ? order by recordedate");
 
 module.exports = function() {
   return {
@@ -12,32 +12,31 @@ module.exports = function() {
      * Save the temphum inside the "db".
      */
     save(temphum) {
-      insertstmt.run(temphum.date, temphum.tempvalue, temphum.humvalue, temphum.sensorid);
+      insertstmt.run(temphum.recordedate, temphum.tempvalue, temphum.humvalue, temphum.sensorid);
       return 1;
     },
     /*
      * Retrieve a temphum with a given id or return all the temphums if the id is undefined.
      */
     find(id, complcallback) {
-      var entrySet=[];
       if(id) {
-        return selectsnsrstmt.each(id, (err, resultset) => {
+        return selectsnsrstmt.all(id, (err, resultset) => {
 	  if(err){
 	    console.log('error : ' + err);
 	  }else{
-	    console.log('result: ' + JSON.stringify(resultset));
-	    entrySet.push(resultset);
+//	    console.log('result: ' + JSON.stringify(resultset));
+	    complcallback(resultset);
 	  }
-	}, complcallback(entrySet));
+	});
       }else {
-        return selectallsstmt.each((err, resultset) => {
+        return selectallsstmt.all((err, resultset) => {
 	  if(err){
 	    console.log('error : ' + err);
 	  }else{
-	    console.log('result: ' + JSON.stringify(resultset));
-	    entrySet.push(resultset);
+//	    console.log('result: ' + JSON.stringify(resultset));
+	    complcallback(resultset);
 	  }
-	}, complcallback(entrySet));
+	});
       }
     },
     /*

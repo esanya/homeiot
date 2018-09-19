@@ -127,7 +127,7 @@ definitions:
     type: object
     properties:
       id: 
-        type: string
+        type: number
       recordedat:
         type: string
       tempvalue:
