@@ -44,7 +44,10 @@ function gettemphum(req, res) {
 
 //GET /temphum operationId
 function getAll(req, res, next) {
-	res.json({ entries: db.find()});
+	db.find(null, (retentries) => {
+	  console.log('retentries: ' + JSON.stringify(retentries));
+	  res.json({ entries: retentries});
+	});
 }
 //POST /temphum operationId
 function save(req, res, next) {
@@ -53,12 +56,16 @@ function save(req, res, next) {
 //GET /temphum/{id} operationId
 function getOne(req, res, next) {
   	var sensorid = req.swagger.params.sensorid.value || 'stranger';
-	var temphum = db.find(sensorid);
-	if(temphum) {
-		res.json(temphum);
-	}else {
-		res.status(204).send();
-	}        
+//	var temphum = db.find(sensorid);
+	db.find(sensorid, (retentries) => {
+	  console.log('retentries: ' + JSON.stringify(retentries));
+	  res.json({ entries: retentries});
+	});
+//	if(temphum) {
+//		res.json(temphum);
+//	}else {
+//		res.status(204).send();
+//	}        
 }
 //PUT /temphum/{id} operationId
 function update(req, res, next) {

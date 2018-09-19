@@ -18,11 +18,26 @@ module.exports = function() {
     /*
      * Retrieve a temphum with a given id or return all the temphums if the id is undefined.
      */
-    find(id) {
+    find(id, complcallback) {
+      var entrySet=[];
       if(id) {
-        return selectsnsrstmt.run(id);
+        return selectsnsrstmt.each(id, (err, resultset) => {
+	  if(err){
+	    console.log('error : ' + err);
+	  }else{
+	    console.log('result: ' + JSON.stringify(resultset));
+	    entrySet.push(resultset);
+	  }
+	}, complcallback(entrySet));
       }else {
-        return selectallsstmt.run();
+        return selectallsstmt.each((err, resultset) => {
+	  if(err){
+	    console.log('error : ' + err);
+	  }else{
+	    console.log('result: ' + JSON.stringify(resultset));
+	    entrySet.push(resultset);
+	  }
+	}, complcallback(entrySet));
       }
     },
     /*
