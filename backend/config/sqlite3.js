@@ -12,7 +12,7 @@ module.exports = function() {
      * Save the temphum inside the "db".
      */
     save(temphum) {
-      insertstmt.run(temphum.recordedate, temphum.tempvalue, temphum.humvalue, temphum.sensorid);
+      insertstmt.run(parseInt(new Date().getTime()/1000), temphum.tempvalue, temphum.humvalue, temphum.sensorid);
       return 1;
     },
     /*
