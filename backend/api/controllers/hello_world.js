@@ -46,7 +46,12 @@ function hello(req, res) {
 
 function time(req, res) {
   // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
-  var hello = util.format('CurrentTime, %s!', new Date());
+  var format = req.swagger.params.format.value || "default";
+  if (format == "default" ) {
+    var hello = util.format('CurrentTime, %s!', new Date().getTime()/1000);
+  } else {
+    var hello = util.format('CurrentTime, %s!', new Date());
+  }
 
   // this sends back a JSON response which is a single string
   res.json(hello);

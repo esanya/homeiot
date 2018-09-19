@@ -51,9 +51,15 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: hello_world
     get:
-      description: Returns 'Hello' to the caller
+      description: Returns the current time in the requested format
       # used as the method name of the controller
       operationId: currenttime
+      parameters:
+        - name: format
+          in: query
+          description: The format in which the caller wants to have the current time
+          required: false
+          type: string
       responses:
         "200":
           description: Success
