@@ -71,6 +71,48 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /temphum:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: temp_hum
+    get:
+      description: Returns all the temperature and humidty values for all sensors
+      # used as the method name of the controller
+      operationId: getAll
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/TempHumResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /temphum/{sensorid}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: temp_hum
+    get:
+      description: Returns all the temperature and humidty values from one sensor
+      # used as the method name of the controller
+      operationId: getOne
+      parameters:
+        - name: sensorid
+          in: path
+          description: The format in which the caller wants to have the current time
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/TempHumResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
@@ -101,7 +143,7 @@ definitions:
       entries:
         type: array
         items: 
-          $ref: "#/definitions/TempHumResponse"
+          $ref: "#/definitions/TempHum"
   GeneralResponse:
     required:
       - message
