@@ -47,7 +47,7 @@ void loop()
 		float dhtTempC = dht.readTempC();
 		Serial.print(F("Humidity: ")); Serial.print(dhtHumidity); Serial.print(F(" [%]\t"));
 		Serial.print(F("Temp: ")); Serial.print(dhtTempC); Serial.println(F(" [C]"));
-
+    delay(500);
 	}
 
 
